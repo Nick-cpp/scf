@@ -1,0 +1,24 @@
+#!/bin/sh
+
+echo "1) Upload file to server"
+echo "2) Download file from server"
+read -p "Select mode (1 or 2): " mode
+
+read -p "Enter SSH port [22]: " port
+port=${port:-22}
+
+read -p "Enter user@host: " remote
+
+if [ "$mode" -eq 1 ]; then
+    read -p "Enter local file path: " local_path
+    read -p "Enter remote destination path: " remote_path
+    scp -P "$port" "$local_path" "$remote:$remote_path"
+elif [ "$mode" -eq 2 ]; then
+    read -p "Enter remote file path: " remote_path
+    read -p "Enter local destination path [.]: " local_path
+    local_path=${local_path:-.}
+    scp -P "$port" "$remote:$remote_path" "$local_path"
+else
+    echo "Invalid option"
+    exit 1
+fi
