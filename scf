@@ -12,21 +12,12 @@ read -p "Enter user@host: " remote
 if [ "$mode" -eq 1 ]; then
     read -p "Enter local file/folder path: " local_path
     read -p "Enter remote destination path: " remote_path
-    if [ -d "$local_path" ]; then
-        scp -r -P "$port" "$local_path" "$remote:$remote_path"
-    else
-        scp -P "$port" "$local_path" "$remote:$remote_path"
-    fi
+    scp -r -P "$port" "$local_path" "$remote:$remote_path"
 elif [ "$mode" -eq 2 ]; then
     read -p "Enter remote file/folder path: " remote_path
     read -p "Enter local destination path [.]: " local_path
     local_path=${local_path:-.}
-    read -p "Is remote destination a directory? (y/N): " is_dir
-    if [[ "$is_dir" =~ ^[Yy]$ ]]; then
-        scp -r -P "$port" "$remote:$remote_path" "$local_path"
-    else
-        scp -P "$port" "$remote:$remote_path" "$local_path"
-    fi
+    scp -r -P "$port" "$remote:$remote_path" "$local_path"
 else
     echo "Invalid option"
     exit 1
